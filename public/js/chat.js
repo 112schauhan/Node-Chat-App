@@ -19,29 +19,29 @@ const sidebarTemplate=document.querySelector('#sidebar-template').innerHTML
 // })
 
 //auto scroll
-// const autoscroll=()=>{
-//     //New message element
-//     const $newMessage=$message.lastElementChild
+const autoscroll=()=>{
+    //New message element
+    const $newMessage=$message.lastElementChild
 
-//     //Height of the new message
-//     const newMessageStyles=getComputedStyle($newMessage)
-//     const newMessageMargin=parseInt(newMessageStyles.marginBottom)
-//     const newMessageHeight=$newMessage.offsetHeight + newMessageMargin
+    //Height of the new message
+    const newMessageStyles=getComputedStyle($newMessage)
+    const newMessageMargin=parseInt(newMessageStyles.marginBottom)
+    const newMessageHeight=$newMessage.offsetHeight + newMessageMargin
 
-//     //visible height
-//     const visibleHeight=$message.offsetHeight
+    //visible height
+    const visibleHeight=$message.offsetHeight
 
-//     //height of the message container
-//     const containerHeight=$message.scrollHeight
+    //height of the message container
+    const containerHeight=$message.scrollHeight
 
-//     //how far has been scrolled
-//     const scrollOffset=$message.scrollTop + visibleHeight
+    //how far has been scrolled
+    const scrollOffset=$message.scrollTop + visibleHeight
 
-//     if(containerHeight - newMessageHeight <= scrollOffset){
-//         $message.scrollTop=$message.scrollHeight
-//     }
+    if(containerHeight - newMessageHeight <= scrollOffset){
+        $message.scrollTop=$message.scrollHeight
+    }
 
-// }
+}
 
 
 socket.on('message',(message)=>{
@@ -53,6 +53,7 @@ socket.on('message',(message)=>{
     })
 
     $message.insertAdjacentHTML('beforeEnd',html)
+    autoscroll()
 
 })
 
@@ -65,6 +66,7 @@ socket.on('locationMessage',(message)=>{
         createdAt:moment(message.createdAt).format('h:mm a')
     })
     $message.insertAdjacentHTML('beforeEnd',html)
+    autoscroll()
 })
 
 
@@ -84,7 +86,7 @@ $messageForm.addEventListener('submit',(e)=>{
     socket.emit('sendMessage',message,()=>{
         //enable form button
         $messageFormButton.removeAttribute('disabled')
-        $messageInput.value="" 
+        $messageInput.value=" " 
         $messageInput.focus()
 
         console.log('Message has been delivered')
